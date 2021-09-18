@@ -1,0 +1,26 @@
+.log
+*.log
+**/lib
+**/dist
+**/build
+**/.next
+**/node_modules
+node_modules
+
+# Mac OS X custom attribute files
+.DS_Store
+.env
+.env.*
+
+test/__snapshots__
+.awcache
+.next
+.now
+gcp_credentials_key.json
+yarn-error.log
+
+*.sqlite
+
+# Vercel
+.vercel
+out
