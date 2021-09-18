@@ -1,18 +1,5 @@
-# Typescript Starter Kit
+# Baby Matrix
 
-A starter kit for working with Typescript build pipelines.
+Educational tool for pre-schools to learn math by creating matrix
 
-## Test
-
-```shell
-npm run test
-```
-
-## TODOs
-
-- [x] for NodeJS (master branch)
-- [x] for Monorepo + NestJS + Typeorm(monorepo branch)
-- [ ] for React
-- [ ] for NextJS
-- [ ] for Vercel + NextJS
-- [x] for Vercel + NodeJS (vercel branch)
+![Screen Shot](/screenshot.png)
