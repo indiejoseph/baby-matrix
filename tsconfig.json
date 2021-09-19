@@ -35,7 +35,13 @@
     "allowJs": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": "./",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    },
   },
   "include": [
     "types",

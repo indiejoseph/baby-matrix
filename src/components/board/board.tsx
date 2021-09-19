@@ -1,8 +1,8 @@
 import { x } from '@xstyled/styled-components';
 import Debug from 'debug';
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { Selectable, SelectionContext } from 'rectangle-selection';
 import { useScreenInch, useWindowSize } from '../../hooks';
+import { Selectable, SelectionArea } from '../selectable';
 
 const debug = Debug('web:board');
 const colors = [
@@ -39,13 +39,13 @@ export const Board: FC = () => {
         : [0, 0],
     [screenSize, inchSize]
   );
-
   const handleOnSelection = useCallback((items: number[]) => {
     setSelected(items);
   }, []);
 
   const handleOnMouseDown = useCallback(() => {
     const color = colors[Math.floor(Math.random() * colors.length)];
+
     setRandColor(color);
     setSelected([]);
   }, []);
@@ -53,14 +53,14 @@ export const Board: FC = () => {
   debug('screenSize: %O, inchSize: %O, numX: %d, numY: %d', screenSize, inchSize, numX, numY);
 
   return (
-    <x.div
-      as={SelectionContext as any}
+    <SelectionArea
       id="board"
       display="grid"
       w="100vw"
       h="100vh"
       pb={2}
       pr={2}
+      userSelect="none"
       gridTemplateColumns={`repeat(${numX}, 1fr)`}
       gridTemplateRows={`repeat(${numY}, 1fr)`}
       onSelection={handleOnSelection}
@@ -75,7 +75,16 @@ export const Board: FC = () => {
             const opacity = Math.round((alpha * 100) / 10) * 10;
 
             return (
-              <x.div ref={innerRef as any} pl={2} pt={2} w={1} h={1} className="tile">
+              <x.div
+                key={`cell-${index.toString()}`}
+                ref={innerRef}
+                pl={2}
+                pt={2}
+                w={1}
+                h={1}
+                userSelect="none"
+                className="cell"
+              >
                 <x.div
                   bg={isSelected ? `${randColor}-600-a${opacity}` : 'rgba(0,0,0,0.15)'}
                   borderRadius="999px"
@@ -89,6 +98,7 @@ export const Board: FC = () => {
                   boxShadow={!isSelected ? 'inset -3px -3px 12px rgba(0,0,0,0.12)' : undefined}
                   w={1}
                   h={1}
+                  userSelect="none"
                   display="flex"
                 >
                   <x.div
@@ -106,6 +116,6 @@ export const Board: FC = () => {
           }}
         </Selectable>
       ))}
-    </x.div>
+    </SelectionArea>
   );
 };

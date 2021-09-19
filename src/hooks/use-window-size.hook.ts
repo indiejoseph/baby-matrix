@@ -7,7 +7,7 @@ export interface UseWindowSize {
   height: number;
 }
 
-export const useWindowSize = () => {
+export const useWindowSize = (): UseWindowSize | undefined => {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [windowSize, setWindowSize] = useState<UseWindowSize>();

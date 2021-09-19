@@ -5,7 +5,7 @@ export interface UseScreenInch {
   height: number;
 }
 
-export const useScreenInch = () => {
+export const useScreenInch = (): UseScreenInch | undefined => {
   const [inchSize, setInchSize] = useState<UseScreenInch>();
 
   useEffect(() => {

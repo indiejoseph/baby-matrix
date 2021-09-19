@@ -6,7 +6,7 @@ const IndexPage: NextPage = () => {
   return <Board />;
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = () => {
   return {
     props: {},
   };
