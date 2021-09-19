@@ -30,7 +30,15 @@ export function useMousePosition(delay = 0): { x: number; y: number } {
     });
   };
 
+  const handleTouchStart = (event: TouchEvent) => {
+    const touch = event.touches[0];
+
+    setX(touch.pageX);
+    setY(touch.pageY);
+  };
+
   useEventListener('touchend', handleTouchEnd);
+  useEventListener('touchstart', handleTouchStart);
 
   useEffect(() => {
     const sub = fromEvent<MouseEvent | TouchEvent>(document, eventName, { passive: true })
