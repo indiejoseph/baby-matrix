@@ -86,12 +86,7 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
   }, [mousePos, startPos, active, boxHeight, boxWidth, boxLeft, boxTop, onSelection, registry]);
 
   return (
-    <x.div
-      onMouseDown={handleOnMouseDown}
-      onTouchStart={handleOnMouseDown}
-      position="relative"
-      {...props}
-    >
+    <x.div onMouseDown={handleOnMouseDown} position="relative" {...props}>
       <RegistryContext.Provider value={registry}>{children}</RegistryContext.Provider>
       {active && (
         <x.div
