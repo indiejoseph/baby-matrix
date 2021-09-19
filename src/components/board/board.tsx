@@ -65,6 +65,7 @@ export const Board: FC = () => {
       gridTemplateRows={`repeat(${numY}, 1fr)`}
       onSelection={handleOnSelection}
       onMouseDown={handleOnMouseDown}
+      onTouchStart={handleOnMouseDown}
     >
       {Array.from(new Array(numX * numY)).map((_, index) => (
         <Selectable key={index.toString()} data={index}>

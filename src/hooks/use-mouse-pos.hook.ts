@@ -22,14 +22,6 @@ export function useMousePosition(delay = 0): { x: number; y: number } {
     eventName = 'touchmove';
   }
 
-  // rest x y when touch end
-  const handleTouchEnd = () => {
-    setTimeout(() => {
-      setX(0);
-      setY(0);
-    });
-  };
-
   const handleTouchStart = (event: TouchEvent) => {
     const touch = event.touches[0];
 
@@ -37,7 +29,6 @@ export function useMousePosition(delay = 0): { x: number; y: number } {
     setY(touch.pageY);
   };
 
-  useEventListener('touchend', handleTouchEnd);
   useEventListener('touchstart', handleTouchStart);
 
   useEffect(() => {
