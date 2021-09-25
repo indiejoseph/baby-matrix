@@ -28,6 +28,7 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
   const boxLeft = Math.min(startPos[0], mouseX);
   const boxWidth = Math.abs(mousePos.x - startPos[0]);
   const boxHeight = Math.abs(mousePos.y - startPos[1]);
+  const [matrixString, setMatrixString] = useState('');
 
   const hide = () => {
     if (active && onSelectionEnd) {
@@ -79,8 +80,17 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
         bottom: boxTop + boxHeight,
       } as DOMRect);
 
-      if (selected && onSelection) {
-        onSelection(selected);
+      if (selected) {
+        const n = selected
+          .map((y, i, arr) => i <= 0 || arr[i - 1] - y === -1)
+          .filter((y, i, arr) => y && arr.slice(0, i).every(z => z)).length; // find consecutive numbers in selected array
+        const m = selected.length / n;
+
+        setMatrixString(`${n} x ${m}`);
+
+        if (onSelection) {
+          onSelection(selected);
+        }
       }
     }
   }, [mousePos, startPos, active, boxHeight, boxWidth, boxLeft, boxTop, onSelection, registry]);
@@ -95,16 +105,27 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
       <RegistryContext.Provider value={registry}>{children}</RegistryContext.Provider>
       {active && (
         <x.div
-          display={active}
-          border="1px solid rgba(0, 0, 0, 0.12)"
-          bg="rgba(0, 0, 0, 0.08)"
+          display={active ? 'flex' : 'none'}
+          border="2px solid rgba(0, 0, 0, 0.12)"
+          bg="rgba(0, 0, 0, 0.75)"
           position="absolute"
           boxSizing="border-box"
           left={`${boxLeft}px`}
           top={`${boxTop}px`}
           w={`${boxWidth}px`}
           h={`${boxHeight}px`}
-        />
+          textAlign="center"
+          justifyContent="center"
+          flexDirection="row"
+          alignItems="center"
+          color="white"
+          whiteSpace="nowrap"
+          overflow="hidden"
+          fontSize="2rem"
+          textShadow="3px 3px 6px rgba(0,0,0,0.5)"
+        >
+          {matrixString}
+        </x.div>
       )}
     </x.div>
   );
