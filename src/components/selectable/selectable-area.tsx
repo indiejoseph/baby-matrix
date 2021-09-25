@@ -1,5 +1,5 @@
 import { x } from '@xstyled/styled-components';
-import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
+import React, { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import { IPosition } from 'spatium';
 import { Registry, RegistryContext } from '~/contexts/registry.context';
 import { useEventListener, useMousePosition } from '~/hooks';
@@ -19,6 +19,7 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
   children,
   ...props
 }) => {
+  const ref = useRef<HTMLDivElement>();
   const mousePos = useMousePosition();
   const registry = useMemo(() => new Registry<number>(), []);
   const [startPos, setStartPos] = useState<IPosition>([0, 0]);
@@ -81,9 +82,19 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
       } as DOMRect);
 
       if (selected) {
-        const n = selected
-          .map((y, i, arr) => i <= 0 || arr[i - 1] - y === -1)
-          .filter((y, i, arr) => y && arr.slice(0, i).every(z => z)).length; // find consecutive numbers in selected array
+        const firstBoxRef = registry.getRefById(selected[0]);
+
+        if (!firstBoxRef?.current) {
+          return;
+        }
+
+        const firstBoxTop = firstBoxRef.current.getBoundingClientRect().top;
+        const selectedRefs = selected
+          .map(id => registry.getRefById(id)?.current)
+          .filter((elm): elm is HTMLDivElement => typeof elm !== 'undefined'); // get selected boxes
+        const n = selectedRefs.filter(
+          box => box.getBoundingClientRect().top === firstBoxTop
+        ).length; // get number of first row boxes
         const m = selected.length / n;
 
         setMatrixString(`${n} x ${m}`);
@@ -97,6 +108,7 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
 
   return (
     <x.div
+      ref={ref}
       onMouseDown={handleOnMouseDown}
       onTouchStart={handleOnMouseDown}
       position="relative"
@@ -105,9 +117,10 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
       <RegistryContext.Provider value={registry}>{children}</RegistryContext.Provider>
       {active && (
         <x.div
+          id="box"
           display={active ? 'flex' : 'none'}
           border="2px solid rgba(0, 0, 0, 0.12)"
-          bg="rgba(0, 0, 0, 0.75)"
+          bg="rgba(0, 0, 0, 0.25)"
           position="absolute"
           boxSizing="border-box"
           left={`${boxLeft}px`}
@@ -123,6 +136,7 @@ export const SelectionArea: FC<SelectionAreaProps & React.ComponentProps<typeof 
           overflow="hidden"
           fontSize="2rem"
           textShadow="3px 3px 6px rgba(0,0,0,0.5)"
+          borderRadius={8}
         >
           {matrixString}
         </x.div>

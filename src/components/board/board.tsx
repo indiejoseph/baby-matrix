@@ -29,16 +29,26 @@ export const Board: FC = () => {
   const [randColor, setRandColor] = useState(colors[0]);
   const [selected, setSelected] = useState<number[]>([]);
   const inchSize = useScreenInch();
-  const [numX, numY] = useMemo(
-    () =>
-      screenSize && inchSize
-        ? [
-            Math.floor(screenSize.width / inchSize.width),
-            Math.floor(screenSize.height / inchSize.height),
-          ]
-        : [0, 0],
-    [screenSize, inchSize]
-  );
+  const [numX, numY, offsetX, offsetY] = useMemo(() => {
+    if (!screenSize || !inchSize) {
+      return [0, 0, 0, 0, 0, 0];
+    }
+
+    const [x1, y1] = [
+      Math.floor(screenSize.width / inchSize.width),
+      Math.floor(screenSize.height / inchSize.height),
+    ];
+
+    console.log(screenSize.width, x1 * inchSize.width);
+
+    const w1 = x1 * inchSize.width;
+    const h1 = y1 * inchSize.height;
+    const px1 = Math.floor((screenSize.width - w1) / 2);
+    const py1 = Math.floor((screenSize.height - h1) / 2);
+
+    return [x1, y1, px1, py1];
+  }, [screenSize, inchSize]);
+
   const handleOnSelection = useCallback((items: number[]) => {
     setSelected(items);
   }, []);
@@ -50,7 +60,15 @@ export const Board: FC = () => {
     setSelected([]);
   }, []);
 
-  debug('screenSize: %O, inchSize: %O, numX: %d, numY: %d', screenSize, inchSize, numX, numY);
+  debug(
+    'screenSize: %O, inchSize: %O, numX: %d, numY: %d, offsetX: %d, offsetY: %d',
+    screenSize,
+    inchSize,
+    numX,
+    numY,
+    offsetX,
+    offsetY
+  );
 
   return (
     <SelectionArea
@@ -58,8 +76,8 @@ export const Board: FC = () => {
       display="grid"
       w="100vw"
       h="100vh"
-      pb={2}
-      pr={2}
+      px={`${offsetX}px`}
+      py={`${offsetY}px`}
       userSelect="none"
       gridTemplateColumns={`repeat(${numX}, 1fr)`}
       gridTemplateRows={`repeat(${numY}, 1fr)`}

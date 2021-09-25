@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, RefObject } from 'react';
 import { RegistryItem } from '~/interfaces';
 import { elementsCollide } from '~/utils';
 
@@ -13,6 +13,10 @@ export class Registry<T> {
 
   public unregister(id: number): void {
     this.map.delete(id);
+  }
+
+  public getRefById(id: number): RefObject<HTMLDivElement> | undefined {
+    return this.map.get(id)?.ref;
   }
 
   public getSelected = (boxRect: DOMRect): T[] | null => {
