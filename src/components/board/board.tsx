@@ -28,7 +28,7 @@ export const Board: FC = () => {
   const screenSize = useWindowSize();
   const [randColor, setRandColor] = useState(colors[0]);
   const [selected, setSelected] = useState<number[]>([]);
-  const inchSize = useScreenInch();
+  const inchSize = useScreenInch(0.8);
   const [numX, numY, offsetX, offsetY] = useMemo(() => {
     if (!screenSize || !inchSize) {
       return [0, 0, 0, 0, 0, 0];

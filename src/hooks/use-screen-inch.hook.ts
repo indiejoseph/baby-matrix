@@ -5,7 +5,7 @@ export interface UseScreenInch {
   height: number;
 }
 
-export const useScreenInch = (): UseScreenInch | undefined => {
+export const useScreenInch = (ratio = 1): UseScreenInch | undefined => {
   const [inchSize, setInchSize] = useState<UseScreenInch>();
 
   useEffect(() => {
@@ -25,8 +25,8 @@ export const useScreenInch = (): UseScreenInch | undefined => {
       }
 
       setInchSize({
-        width: inchDom.offsetWidth,
-        height: inchDom.offsetHeight,
+        width: inchDom.offsetWidth * ratio,
+        height: inchDom.offsetHeight * ratio,
       });
     }
 
@@ -35,7 +35,7 @@ export const useScreenInch = (): UseScreenInch | undefined => {
         document.body.removeChild(inchDom);
       }
     };
-  }, [setInchSize]);
+  }, [setInchSize, ratio]);
 
   return inchSize;
 };
