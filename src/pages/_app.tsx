@@ -13,11 +13,6 @@ function MyApp({ Component, pageProps }: AppProps): React.ReactElement {
           name="description"
           content="Educational tool for pre-schools to learn math by creating matrix"
         />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap"
-          rel="stylesheet"
-        />
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Head>
       <GlobalStyles />

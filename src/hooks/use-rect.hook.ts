@@ -17,8 +17,12 @@ function getRect(element: HTMLElement) {
   return element.getBoundingClientRect();
 }
 
-export function useRect(ref: RefObject<any>): DOMRect | void {
-  const [rect, setRect] = useState<DOMRect>(getRect(ref ? ref.current : null));
+export function useRect<T extends HTMLElement>(ref: RefObject<T>): DOMRect | void {
+  if (!ref.current) {
+    return;
+  }
+
+  const [rect, setRect] = useState<DOMRect>(getRect(ref.current));
 
   const handleResize = useCallback(() => {
     if (!ref.current) {

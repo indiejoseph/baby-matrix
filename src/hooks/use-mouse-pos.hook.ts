@@ -8,6 +8,7 @@ function getIsTouchDevice(): boolean {
     typeof window !== 'undefined' &&
     ('ontouchstart' in window ||
       navigator.maxTouchPoints > 0 ||
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       (navigator as any).msMaxTouchPoints > 0)
   );
 }
