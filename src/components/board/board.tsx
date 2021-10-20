@@ -1,8 +1,8 @@
-import { x } from '@xstyled/styled-components';
 import Debug from 'debug';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useScreenInch, useWindowSize } from '../../hooks';
 import { Selectable, SelectionArea } from '../selectable';
+import { Cell } from './cell';
 
 const debug = Debug('web:board');
 const colors = [
@@ -94,43 +94,16 @@ export const Board: FC = () => {
             const opacity = Math.round((alpha * 100) / 10) * 10;
 
             return (
-              <x.div
-                key={`cell-${index.toString()}`}
+              <Cell
                 ref={innerRef}
-                pl={2}
-                pt={2}
-                w={1}
-                h={1}
-                userSelect="none"
-                className="cell"
-              >
-                <x.div
-                  bg={isSelected ? `${randColor}-600-a${opacity}` : 'rgba(0,0,0,0.15)'}
-                  borderRadius="999px"
-                  transitionDuration="500ms"
-                  transitionTimingFunction="ease-in-out"
-                  transitionProperty="background-color, color, font-size, box-shadow"
-                  alignContent="center"
-                  alignItems="center"
-                  fontSize={isSelected ? '2.5rem' : '0.5rem'}
-                  color={isSelected ? 'white' : 'rgba(255,255,255,0)'}
-                  boxShadow={!isSelected ? 'inset -3px -3px 12px rgba(0,0,0,0.12)' : undefined}
-                  w={1}
-                  h={1}
-                  userSelect="none"
-                  display="flex"
-                >
-                  <x.div
-                    textAlign="center"
-                    w={1}
-                    userSelect="none"
-                    color="inherit"
-                    fontSize="inherit"
-                  >
-                    {isSelected ? selectedIndex + 1 : undefined}
-                  </x.div>
-                </x.div>
-              </x.div>
+                key={`cell-${index.toString()}`}
+                opacity={opacity}
+                isSelected={isSelected}
+                randColor={randColor}
+                name={(selectedIndex + 1).toString()}
+                w={inchSize?.width || 1}
+                h={inchSize?.height || 1}
+              />
             );
           }}
         </Selectable>
